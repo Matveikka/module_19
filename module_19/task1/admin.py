@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Buyer, Game
-
+from .models import Buyer, Game, News
 
 # Register your models here.
+admin.site.register(News)
+
+
 @admin.register(Buyer)
 class BuyerAdmin(admin.ModelAdmin):
     list_display = (['name', 'balance', 'age'])

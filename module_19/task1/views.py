@@ -1,19 +1,19 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import UserRegister
-from .models import Buyer
-from .models import Game
+from .models import Buyer, Game, News
 
 
 # Create your views here.
-def platform(requset):
-    return render(requset, 'fourth_task/platform.html')
+def platform(request):
+    return render(request, 'fourth_task/platform.html')
 
 
-def games(requset):
+def games(request):
     games = Game.objects.all()
     context = {'games': games}
-    return render(requset, 'fourth_task/games.html', context)
+    return render(request, 'fourth_task/games.html', context)
 
 
 def cart(request):
@@ -81,3 +81,11 @@ def sign_up_by_django(request):
         info['message'] = form
 
     return render(request, 'registration_page.html', info)
+
+
+def news(request):
+    news_list = News.objects.all().order_by('-created_at')
+    paginator = Paginator(news_list, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'news.html', {'news': page_obj})
